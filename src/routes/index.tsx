@@ -17,7 +17,7 @@ function Index() {
         "bg-[url('/login-image.jpg')] bg-cover bg-right-top"
       )}
     >
-      <section className="w-full h-full col-start-2 flex flex-col justify-center bg-purple-50 px-16 py-10 rounded-xl gap-10 relative">
+      <section className="w-full h-full col-start-2 flex flex-col justify-center bg-purple-50 px-16 py-10 rounded-xl gap-10 relative z-60">
         <span className="absolute top-4 right-6 text-2xl font-display font-bold text-purple-900">
           E.
         </span>
@@ -37,6 +37,7 @@ function Index() {
         </div>
         <LoginForm />
       </section>
+      <div className="absolute right-0 top-0 w-screen h-screen bg-gradient-to-r from-transparent to-white z-50 blur-2xl" />
     </main>
   );
 }
