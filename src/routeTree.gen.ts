@@ -8,10 +8,16 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+
+// Create Virtual Routes
+
+const AppIndexLazyImport = createFileRoute('/app/')()
 
 // Create/Update Routes
 
@@ -20,6 +26,12 @@ const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const AppIndexLazyRoute = AppIndexLazyImport.update({
+  id: '/app/',
+  path: '/app/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/app/index.lazy').then((d) => d.Route))
 
 // Populate the FileRoutesByPath interface
 
@@ -32,6 +44,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/app/': {
+      id: '/app/'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -39,32 +58,37 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app': typeof AppIndexLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/app/': typeof AppIndexLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/app'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/app'
+  id: '__root__' | '/' | '/app/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppIndexLazyRoute: typeof AppIndexLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppIndexLazyRoute: AppIndexLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +101,15 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/app/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/app/": {
+      "filePath": "app/index.lazy.tsx"
     }
   }
 }

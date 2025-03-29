@@ -31,7 +31,7 @@ export const LoginForm = () => {
 
   const { mutate } = useMutation({
     mutationFn: login,
-    onSuccess: () => router.navigate({ to: "/" }),
+    onSuccess: () => router.navigate({ to: "/app" }),
   });
 
   const onSubmit = (formData: LoginFormType) => {

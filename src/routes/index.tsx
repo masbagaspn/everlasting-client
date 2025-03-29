@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { LoginForm } from "@/components/forms/LoginForm";
+import { LoginForm } from "@/components/form/login-form";
 
 import clsx from "clsx";
 
