@@ -1,3 +1,5 @@
+import React from "react";
+import { Link, useMatchRoute } from "@tanstack/react-router";
 import { motion as m } from "motion/react";
 
 import {
@@ -7,28 +9,10 @@ import {
   ChevronLeft,
   ArrowDownToLine,
 } from "lucide-react";
-import { Link, useMatchRoute } from "@tanstack/react-router";
-import clsx from "clsx";
-import { Separator } from "@/components/ui/separator";
-import React from "react";
 
-const menuItems = [
-  {
-    title: "Dashboard",
-    to: "/app",
-    icon: "LayoutDashboard",
-  },
-  {
-    title: "Guests",
-    to: "/app/guests",
-    icon: "Users",
-  },
-  {
-    title: "Events",
-    to: "/app/events",
-    icon: "Tickets",
-  },
-];
+import { Separator } from "@/components/ui/separator";
+import clsx from "clsx";
+import sidebarMenuItems from "@/static/sidebarMenuItems";
 
 const DashboardSidebar = () => {
   const matchRoute = useMatchRoute();
@@ -52,12 +36,13 @@ const DashboardSidebar = () => {
         </h1>
         <Separator className="bg-neutral-200 mt-4 mb-6" />
         <ul className="flex flex-col gap-4">
-          {menuItems.map((item) => (
+          {sidebarMenuItems.map((item) => (
             <li key={`sidebar-menu-${item.title}`}>
               <Link
                 to={item.to}
                 className={clsx(
                   "w-full inline-flex items-center px-3 py-2 gap-4 text-sm tracking-tight rounded",
+                  [isOpen && "px-3 py-2", !isOpen && "p-2"],
                   [
                     isActive(item.to) &&
                       "bg-purple-900 text-purple-100 font-semibold",
@@ -78,7 +63,7 @@ const DashboardSidebar = () => {
         <Separator className="mb-4 bg-neutral-200" />
         <button
           className={clsx(
-            "w-full inline-flex justify-start items-center px-3.5 py-2 gap-4",
+            "w-full flex items-center px-3.5 py-2 gap-4",
             "bg-transparent text-neutral-500 text-sm tracking-tight rounded",
             "hover:bg-purple-100 hover:text-purple-800 cursor-pointer"
           )}
