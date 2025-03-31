@@ -14,6 +14,11 @@ const sidebarMenuItems = [
     to: "/app/events",
     icon: "Tickets",
   },
+  {
+    title: "Messages",
+    to: "/app/messages",
+    icon: "MessageSquareShare",
+  },
 ];
 
 export default sidebarMenuItems;

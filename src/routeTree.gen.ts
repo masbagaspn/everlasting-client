@@ -8,16 +8,13 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
-
-// Create Virtual Routes
-
-const AppIndexLazyImport = createFileRoute('/app/')()
+import { Route as ClientIndexImport } from './routes/client/index'
+import { Route as ClientDashboardImport } from './routes/client/dashboard'
+import { Route as AuthLoginImport } from './routes/auth/login'
 
 // Create/Update Routes
 
@@ -27,11 +24,23 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AppIndexLazyRoute = AppIndexLazyImport.update({
-  id: '/app/',
-  path: '/app/',
+const ClientIndexRoute = ClientIndexImport.update({
+  id: '/client/',
+  path: '/client/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/app/index.lazy').then((d) => d.Route))
+} as any)
+
+const ClientDashboardRoute = ClientDashboardImport.update({
+  id: '/client/dashboard',
+  path: '/client/dashboard',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthLoginRoute = AuthLoginImport.update({
+  id: '/auth/login',
+  path: '/auth/login',
+  getParentRoute: () => rootRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -44,11 +53,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/app/': {
-      id: '/app/'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AppIndexLazyImport
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/auth/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/client/dashboard': {
+      id: '/client/dashboard'
+      path: '/client/dashboard'
+      fullPath: '/client/dashboard'
+      preLoaderRoute: typeof ClientDashboardImport
+      parentRoute: typeof rootRoute
+    }
+    '/client/': {
+      id: '/client/'
+      path: '/client'
+      fullPath: '/client'
+      preLoaderRoute: typeof ClientIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -58,37 +81,47 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/app': typeof AppIndexLazyRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/client/dashboard': typeof ClientDashboardRoute
+  '/client': typeof ClientIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/app': typeof AppIndexLazyRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/client/dashboard': typeof ClientDashboardRoute
+  '/client': typeof ClientIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/app/': typeof AppIndexLazyRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/client/dashboard': typeof ClientDashboardRoute
+  '/client/': typeof ClientIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app'
+  fullPaths: '/' | '/auth/login' | '/client/dashboard' | '/client'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app'
-  id: '__root__' | '/' | '/app/'
+  to: '/' | '/auth/login' | '/client/dashboard' | '/client'
+  id: '__root__' | '/' | '/auth/login' | '/client/dashboard' | '/client/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AppIndexLazyRoute: typeof AppIndexLazyRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  ClientDashboardRoute: typeof ClientDashboardRoute
+  ClientIndexRoute: typeof ClientIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AppIndexLazyRoute: AppIndexLazyRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  ClientDashboardRoute: ClientDashboardRoute,
+  ClientIndexRoute: ClientIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -102,14 +135,22 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/app/"
+        "/auth/login",
+        "/client/dashboard",
+        "/client/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/app/": {
-      "filePath": "app/index.lazy.tsx"
+    "/auth/login": {
+      "filePath": "auth/login.tsx"
+    },
+    "/client/dashboard": {
+      "filePath": "client/dashboard.tsx"
+    },
+    "/client/": {
+      "filePath": "client/index.tsx"
     }
   }
 }
