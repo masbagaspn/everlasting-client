@@ -13,16 +13,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { LoginFormSchema, LoginFormType } from "@/schema/LoginForm";
-import { useAuthStore } from "@/stores/authStore";
 import { useRouter } from "@tanstack/react-router";
+import { login } from "@/services/auth";
+import { LoginCredentials, LoginCredentialsType } from "@/schema/auth";
+import { useAuthStore } from "@/stores/authStore";
+import { toast } from "sonner";
 
-export const LoginForm = () => {
-  const login = useAuthStore((state) => state.login);
+const LoginForm = () => {
+  const setToken = useAuthStore((store) => store.setUserToken);
   const router = useRouter();
 
-  const form = useForm<LoginFormType>({
-    resolver: zodResolver(LoginFormSchema),
+  const form = useForm<LoginCredentialsType>({
+    resolver: zodResolver(LoginCredentials),
     defaultValues: {
       username: "",
       password: "",
@@ -31,10 +33,17 @@ export const LoginForm = () => {
 
   const { mutate } = useMutation({
     mutationFn: login,
-    onSuccess: () => router.navigate({ to: "/app" }),
+    onSuccess: (data) => {
+      setToken(data.responseData);
+      router.navigate({ to: "/client" });
+    },
+    onError: (err: Error) => {
+      console.error(err);
+      toast(err.message);
+    },
   });
 
-  const onSubmit = (formData: LoginFormType) => {
+  const onSubmit = (formData: LoginCredentialsType) => {
     mutate(formData);
   };
 
@@ -52,7 +61,7 @@ export const LoginForm = () => {
               <FormLabel>Username</FormLabel>
               <div className="flex flex-col gap-2">
                 <FormControl className="flex flex-col gap-2">
-                  <Input {...field} className="font-sans py-6" />
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage className="text-red-600" />
               </div>
@@ -66,14 +75,16 @@ export const LoginForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl className="flex flex-col gap-2">
-                <Input type="password" {...field} className="font-sans py-6" />
+                <Input type="password" {...field} />
               </FormControl>
               <FormMessage className="text-red-600" />
             </FormItem>
           )}
         />
-        <Button className="mt-8 py-6 hover:cursor-pointer">Sign In</Button>
+        <Button className="mt-8 hover:cursor-pointer">Sign In</Button>
       </form>
     </Form>
   );
 };
+
+export default LoginForm;

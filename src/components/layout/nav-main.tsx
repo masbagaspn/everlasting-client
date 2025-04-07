@@ -6,18 +6,19 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Link, useMatchRoute } from "@tanstack/react-router";
-import clsx from "clsx";
+
 import {
   LayoutDashboard,
   MessageSquareShare,
   Tickets,
+  UserPlus,
   Users,
 } from "lucide-react";
 
 const sidebarMenuItems = [
   {
     title: "Dashboard",
-    url: "/client",
+    url: "/client/dashboard",
     icon: LayoutDashboard,
   },
   {
@@ -45,21 +46,33 @@ const NavMain = () => {
     <SidebarGroup>
       <SidebarGroupContent>
         <SidebarMenu>
-          {sidebarMenuItems.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton
-                tooltip={item.title}
-                asChild
-                isActive={isActive(item.url)}
-                className={clsx([!isActive(item.url) && "text-neutral-600"])}
-              >
-                <Link to={item.url}>
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          <SidebarMenuItem className="mb-2">
+            <SidebarMenuButton
+              asChild
+              className="bg-sidebar-accent-foreground text-sidebar-accent font-semibold tracking-normal shadow text-sm"
+            >
+              <Link to="/client/guests/add">
+                <UserPlus />
+                <span>Create Invitation</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          {sidebarMenuItems.map((item) => {
+            return (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton
+                  tooltip={item.title}
+                  isActive={isActive(item.url)}
+                  asChild
+                >
+                  <Link to={item.url}>
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>

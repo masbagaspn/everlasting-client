@@ -6,34 +6,12 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-purple-950: #28104e;
-  --color-purple-900: #3f1775;
-  --color-purple-800: #6437a0;
-  --color-purple-700: #9854cb;
-  --color-purple-600: #bc5ce9;
-  --color-purple-500: #cd84ef;
-  --color-purple-400: #d89ef3;
-  --color-purple-300: #e6b1ff;
-  --color-purple-200: #edcafd;
-  --color-purple-100: #f8f1fc;
-
-  --color-neutral-950: #0c1a1e;
-  --color-neutral-900: #273337;
-  --color-neutral-800: #424d50;
-  --color-neutral-700: #5d6669;
-  --color-neutral-600: #788082;
-  --color-neutral-500: #93999b;
-  --color-neutral-400: #aeb3b4;
-  --color-neutral-300: #c9cccd;
-  --color-neutral-200: #e4e6e6;
-  --color-neutral-100: #fcfcfc;
-
   --font-sans: "Plus Jakarta Sans", "sans-serif";
   --font-display: "Bree Serif", serif;
 }
 
 :root {
-  --radius: 0.25rem;
+  --radius: 0.5rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);
@@ -142,6 +120,15 @@
 @layer base {
   * {
     @apply font-sans tracking-tight border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;

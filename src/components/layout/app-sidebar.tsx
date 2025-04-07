@@ -7,14 +7,15 @@ import {
 import NavUser from "@/components/layout/nav-user";
 import NavMain from "@/components/layout/nav-main";
 import { useAuthStore } from "@/stores/authStore";
+import NavHeader from "@/components/layout/nav-header";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuthStore();
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
-      <SidebarHeader className="font-display tracking-tight text-purple-900 px-2 mt-2">
-        Everlasting
+      <SidebarHeader>
+        <NavHeader />
       </SidebarHeader>
       <SidebarContent>
         <NavMain />

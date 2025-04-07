@@ -14,7 +14,11 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as ClientIndexImport } from './routes/client/index'
 import { Route as ClientDashboardImport } from './routes/client/dashboard'
+import { Route as AuthRegisterImport } from './routes/auth/register'
 import { Route as AuthLoginImport } from './routes/auth/login'
+import { Route as ClientProfileIndexImport } from './routes/client/profile/index'
+import { Route as ClientGuestsIndexImport } from './routes/client/guests/index'
+import { Route as ClientGuestsAddImport } from './routes/client/guests/add'
 
 // Create/Update Routes
 
@@ -36,9 +40,33 @@ const ClientDashboardRoute = ClientDashboardImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthRegisterRoute = AuthRegisterImport.update({
+  id: '/auth/register',
+  path: '/auth/register',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const AuthLoginRoute = AuthLoginImport.update({
   id: '/auth/login',
   path: '/auth/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ClientProfileIndexRoute = ClientProfileIndexImport.update({
+  id: '/client/profile/',
+  path: '/client/profile/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ClientGuestsIndexRoute = ClientGuestsIndexImport.update({
+  id: '/client/guests/',
+  path: '/client/guests/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ClientGuestsAddRoute = ClientGuestsAddImport.update({
+  id: '/client/guests/add',
+  path: '/client/guests/add',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,6 +88,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginImport
       parentRoute: typeof rootRoute
     }
+    '/auth/register': {
+      id: '/auth/register'
+      path: '/auth/register'
+      fullPath: '/auth/register'
+      preLoaderRoute: typeof AuthRegisterImport
+      parentRoute: typeof rootRoute
+    }
     '/client/dashboard': {
       id: '/client/dashboard'
       path: '/client/dashboard'
@@ -74,6 +109,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClientIndexImport
       parentRoute: typeof rootRoute
     }
+    '/client/guests/add': {
+      id: '/client/guests/add'
+      path: '/client/guests/add'
+      fullPath: '/client/guests/add'
+      preLoaderRoute: typeof ClientGuestsAddImport
+      parentRoute: typeof rootRoute
+    }
+    '/client/guests/': {
+      id: '/client/guests/'
+      path: '/client/guests'
+      fullPath: '/client/guests'
+      preLoaderRoute: typeof ClientGuestsIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/client/profile/': {
+      id: '/client/profile/'
+      path: '/client/profile'
+      fullPath: '/client/profile'
+      preLoaderRoute: typeof ClientProfileIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -82,46 +138,91 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth/login': typeof AuthLoginRoute
+  '/auth/register': typeof AuthRegisterRoute
   '/client/dashboard': typeof ClientDashboardRoute
   '/client': typeof ClientIndexRoute
+  '/client/guests/add': typeof ClientGuestsAddRoute
+  '/client/guests': typeof ClientGuestsIndexRoute
+  '/client/profile': typeof ClientProfileIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth/login': typeof AuthLoginRoute
+  '/auth/register': typeof AuthRegisterRoute
   '/client/dashboard': typeof ClientDashboardRoute
   '/client': typeof ClientIndexRoute
+  '/client/guests/add': typeof ClientGuestsAddRoute
+  '/client/guests': typeof ClientGuestsIndexRoute
+  '/client/profile': typeof ClientProfileIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/auth/login': typeof AuthLoginRoute
+  '/auth/register': typeof AuthRegisterRoute
   '/client/dashboard': typeof ClientDashboardRoute
   '/client/': typeof ClientIndexRoute
+  '/client/guests/add': typeof ClientGuestsAddRoute
+  '/client/guests/': typeof ClientGuestsIndexRoute
+  '/client/profile/': typeof ClientProfileIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth/login' | '/client/dashboard' | '/client'
+  fullPaths:
+    | '/'
+    | '/auth/login'
+    | '/auth/register'
+    | '/client/dashboard'
+    | '/client'
+    | '/client/guests/add'
+    | '/client/guests'
+    | '/client/profile'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/login' | '/client/dashboard' | '/client'
-  id: '__root__' | '/' | '/auth/login' | '/client/dashboard' | '/client/'
+  to:
+    | '/'
+    | '/auth/login'
+    | '/auth/register'
+    | '/client/dashboard'
+    | '/client'
+    | '/client/guests/add'
+    | '/client/guests'
+    | '/client/profile'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth/login'
+    | '/auth/register'
+    | '/client/dashboard'
+    | '/client/'
+    | '/client/guests/add'
+    | '/client/guests/'
+    | '/client/profile/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthLoginRoute: typeof AuthLoginRoute
+  AuthRegisterRoute: typeof AuthRegisterRoute
   ClientDashboardRoute: typeof ClientDashboardRoute
   ClientIndexRoute: typeof ClientIndexRoute
+  ClientGuestsAddRoute: typeof ClientGuestsAddRoute
+  ClientGuestsIndexRoute: typeof ClientGuestsIndexRoute
+  ClientProfileIndexRoute: typeof ClientProfileIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthLoginRoute: AuthLoginRoute,
+  AuthRegisterRoute: AuthRegisterRoute,
   ClientDashboardRoute: ClientDashboardRoute,
   ClientIndexRoute: ClientIndexRoute,
+  ClientGuestsAddRoute: ClientGuestsAddRoute,
+  ClientGuestsIndexRoute: ClientGuestsIndexRoute,
+  ClientProfileIndexRoute: ClientProfileIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -136,8 +237,12 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/auth/login",
+        "/auth/register",
         "/client/dashboard",
-        "/client/"
+        "/client/",
+        "/client/guests/add",
+        "/client/guests/",
+        "/client/profile/"
       ]
     },
     "/": {
@@ -146,11 +251,23 @@ export const routeTree = rootRoute
     "/auth/login": {
       "filePath": "auth/login.tsx"
     },
+    "/auth/register": {
+      "filePath": "auth/register.tsx"
+    },
     "/client/dashboard": {
       "filePath": "client/dashboard.tsx"
     },
     "/client/": {
       "filePath": "client/index.tsx"
+    },
+    "/client/guests/add": {
+      "filePath": "client/guests/add.tsx"
+    },
+    "/client/guests/": {
+      "filePath": "client/guests/index.tsx"
+    },
+    "/client/profile/": {
+      "filePath": "client/profile/index.tsx"
     }
   }
 }

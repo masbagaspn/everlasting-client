@@ -1,25 +1,21 @@
-import { api } from "@/lib/axiosInstance";
+import { setAccessToken } from "@/lib/auth";
+import { User } from "@/types/User";
 import { create } from "zustand";
-
-export type User = {
-  id: string;
-  username: string;
-};
 
 type AuthState = {
   user: User | null;
-  login: (credentials: { username: string; password: string }) => Promise<void>;
-  logout: () => void;
+  accessToken?: string;
+  setUser: (user: User) => void;
+  setUserToken: (token: string) => void;
 };
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
-  login: async (credentials) => {
-    const { data } = await api.post("/auth/login", credentials);
-    localStorage.setItem("token", data.token);
-    set({ user: data.user });
+  setUser: (user: User) => {
+    set((state) => ({ ...state, user }));
   },
-  logout: () => {
-    set({ user: null });
+  setUserToken: (token: string) => {
+    setAccessToken(token);
+    set((state) => ({ ...state, accessToken: token }));
   },
 }));
